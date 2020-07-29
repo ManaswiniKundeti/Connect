@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "908861519044",
+    "firebase_url": "https://connect-app-3164f.firebaseio.com",
+    "project_id": "connect-app-3164f",
+    "storage_bucket": "connect-app-3164f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:908861519044:android:80a7c5c4e3f26f406ec591",
+        "android_client_info": {
+          "package_name": "com.manu.connect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "908861519044-cu2v6siu1dqksc4qd6tib04e63f5vgvn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtnJz3B-F2jtacVjccSTfF-nKQBk2t8cc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "908861519044-cu2v6siu1dqksc4qd6tib04e63f5vgvn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
