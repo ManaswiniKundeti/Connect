@@ -5,37 +5,38 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
-import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.manu.connect.R
-import com.manu.connect.view.ui.fragments.ChatFragment
-import com.manu.connect.view.ui.fragments.SearchFragment
-import com.manu.connect.view.ui.fragments.SettingsFragment
+import com.manu.connect.view.adapter.ViewPagerAdapter
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var viewPagerAdapter: ViewPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(findViewById(R.id.toolbar_main))
 
-        val toolbar:Toolbar = findViewById(R.id.toolbar_main)
-        setSupportActionBar(toolbar)
-        supportActionBar?.title = ""
+        setSupportActionBar(toolbar_main)
+        supportActionBar?.title = "" // as will be using image & username as title
 
-        val tabLayout :TabLayout = findViewById(R.id.tab_layout_main)
-        val viewPager :ViewPager = findViewById(R.id.view_pager_main)
-        val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
+        setupViewPager()
+    }
 
-        viewPagerAdapter.addFragment(ChatFragment(),"Chats")
-        viewPagerAdapter.addFragment(SearchFragment(), "Search")
-        viewPagerAdapter.addFragment(SettingsFragment(), "Settings")
+    private fun setupViewPager() {
+        viewPagerAdapter = ViewPagerAdapter(this)
 
-        viewPager.adapter = viewPagerAdapter
-        tabLayout.setupWithViewPager(viewPager)
+        view_pager_main.adapter = viewPagerAdapter
+        TabLayoutMediator(tab_layout_main, view_pager_main, TabLayoutMediator.TabConfigurationStrategy{tab, position ->
+            when(position){
+                 0 -> tab.text = "CHATS"
+                1 -> tab.text = "SEARCH"
+                2 -> tab.text = "SETTINGS"
+            }
+        }).attach()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -52,37 +53,6 @@ class MainActivity : AppCompatActivity() {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    internal class ViewPagerAdapter(fragmentManager : FragmentManager) :
-        FragmentPagerAdapter(fragmentManager){
-
-        private val fragments : ArrayList<Fragment> = ArrayList<Fragment>()
-        private val titles : ArrayList<String> = ArrayList<String>()
-
-        /**
-         * Return the Fragment associated with a specified position.
-         */
-        override fun getItem(position: Int): Fragment {
-            return  fragments[position]
-        }
-
-        /**
-         * Return the number of views available.
-         */
-        override fun getCount(): Int {
-            return fragments.size
-        }
-
-        fun addFragment(fragment: Fragment, title : String){
-            fragments.add(fragment)
-            titles.add(title)
-        }
-
-        override fun getPageTitle(position: Int): CharSequence? {
-            return titles[position]
-        }
-
     }
 
 }
