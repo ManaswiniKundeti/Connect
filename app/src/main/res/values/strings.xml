@@ -5,4 +5,10 @@
     <string name="chat_fragment_name">Chats</string>
     <string name="search_fragment_name">Search</string>
     <string name="settings_fragment_name">Account Settings</string>
+    <string name="username_hint_string">username</string>
+    <string name="email_hint_string">email</string>
+    <string name="password_hint_string">password</string>
+    <string name="register_button_text">Register</string>
+    <string name="login_button_text">Login</string>
+    <string name="welcome_text_string">Welcome</string>
 </resources>
