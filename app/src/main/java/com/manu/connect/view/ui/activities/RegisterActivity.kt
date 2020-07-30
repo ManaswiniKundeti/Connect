@@ -14,13 +14,14 @@ class RegisterActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar_register)
         supportActionBar?.title = "Register"
-        supportActionBar?.setDisplayHomeAsUpEnabled(true) //back button
+
+        //back button
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar_register.setNavigationOnClickListener {
             val intent = Intent(this, WelcomeActivity::class.java)
             startActivity(intent)
             finish()
         }
-
 
     }
 }
