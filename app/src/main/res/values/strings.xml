@@ -11,4 +11,5 @@
     <string name="register_button_text">Register</string>
     <string name="login_button_text">Login</string>
     <string name="welcome_text_string">Welcome</string>
+    <string name="logout">Logout</string>
 </resources>
