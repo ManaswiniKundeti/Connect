@@ -5,18 +5,22 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.widget.Toolbar
-import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.*
 import com.manu.connect.R
+import com.manu.connect.model.Users
 import com.manu.connect.view.adapter.ViewPagerAdapter
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewPagerAdapter: ViewPagerAdapter
+
+    var referenceUsers : DatabaseReference? = null
+    var firebaseUser : FirebaseUser? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +29,26 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar_main)
         supportActionBar?.title = "" // as will be using image & username as title
 
+        firebaseUser = FirebaseAuth.getInstance().currentUser
+        referenceUsers = FirebaseDatabase.getInstance().reference.child("Users").child(firebaseUser!!.uid)
+
         setupViewPager()
+
+        //display username and profile photo
+        referenceUsers!!.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.exists()){
+                    val user : Users? = snapshot.getValue(Users::class.java)
+                    username_main.text = user?.getUsername()
+                    Picasso.get().load(user?.getProfile())
+                        .placeholder(R.drawable.profile_image)
+                        .into(profile_image_main)
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
     }
 
     private fun setupViewPager() {
