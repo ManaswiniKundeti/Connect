@@ -27,11 +27,7 @@ class SearchFragment : Fragment() {
     private var mSearchEditText : EditText? = null
     private var mRecyclerView : RecyclerView? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view : View = inflater.inflate(R.layout.fragment_search, container, false)
 
         mRecyclerView = view.findViewById(R.id.search_list)
@@ -42,7 +38,6 @@ class SearchFragment : Fragment() {
         retrieveAllUsers()
 
         mSearchEditText = view.findViewById(R.id.search_users_edit_text)
-
         mSearchEditText!!.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
             }

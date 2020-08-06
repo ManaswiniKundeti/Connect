@@ -1,16 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="30dp"
     tools:context=".view.ui.fragments.SettingsFragment">
 
-    <TextView
+    <androidx.cardview.widget.CardView
+        android:id="@+id/settings_card_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/settings_fragment_name"
-        android:textSize="30sp"
-        android:gravity="center"
-        android:textStyle="bold"/>
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/settings_cover_image"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/cover_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/settings_profile_image"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="130dp"
+            android:src="@drawable/profile_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:id="@+id/settings_facebook"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/facebook"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/settings_instagram"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings_card_view" />
+
+    <ImageView
+        android:id="@+id/settings_instagram"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/instagram"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/settings_website"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/settings_facebook"
+        app:layout_constraintTop_toBottomOf="@+id/settings_card_view" />
+
+    <ImageView
+        android:id="@+id/settings_website"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/website"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/settings_instagram"
+        app:layout_constraintTop_toBottomOf="@+id/settings_card_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--    <androidx.cardview.widget.CardView-->
+    <!--        android:id="@+id/settings_social_card_view"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:backgroundTint="@color/colorProfile"-->
+    <!--        android:gravity="center"-->
+    <!--        android:padding="6dp"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/settings_card_view">-->
+
+    <!--        <ImageView-->
+    <!--            android:id="@+id/settings_facebook"-->
+    <!--            android:layout_width="40dp"-->
+    <!--            android:layout_height="40dp"-->
+    <!--            android:layout_marginLeft="30dp"-->
+    <!--            android:scaleType="centerCrop"-->
+    <!--            android:src="@drawable/facebook" />-->
+
+    <!--        <ImageView-->
+    <!--            android:id="@+id/settings_instagram"-->
+    <!--            android:layout_width="40dp"-->
+    <!--            android:layout_height="40dp"-->
+    <!--            android:scaleType="centerCrop"-->
+    <!--            android:src="@drawable/instagram"-->
+    <!--            android:layout_marginLeft="80dp"/>-->
+
+    <!--        <ImageView-->
+    <!--            android:id="@+id/settings_website"-->
+    <!--            android:layout_width="40dp"-->
+    <!--            android:layout_height="40dp"-->
+    <!--            android:layout_marginStart="280dp"-->
+    <!--            android:scaleType="centerCrop"-->
+    <!--            android:src="@drawable/website" />-->
+
+    <!--    </androidx.cardview.widget.CardView>-->
+
+

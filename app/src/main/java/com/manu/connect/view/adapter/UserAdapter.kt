@@ -14,9 +14,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.search_item.view.*
 
-class UserAdapter(mContext: Context,
-                  mUsers : List<Users>,
-                  isChatCheck : Boolean) : RecyclerView.Adapter<ItemViewHolder>() {
+class UserAdapter(mContext: Context, mUsers : List<Users>, isChatCheck : Boolean) : RecyclerView.Adapter<ItemViewHolder>() {
 
     private val mContext : Context = mContext
     private val mUsers : List<Users> = mUsers
