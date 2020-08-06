@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="30dp"
+    android:padding="16dp"
     tools:context=".view.ui.fragments.SettingsFragment">
 
     <androidx.cardview.widget.CardView
@@ -35,6 +35,22 @@
             android:src="@drawable/profile_image"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/settings_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="User name"
+            android:gravity="center"
+            android:padding="8dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_gravity="center_horizontal"
+            android:layout_below="@+id/settings_profile_image"
+            android:layout_marginTop="280dp"
+            android:layout_marginBottom="8dp"
+            />
     </androidx.cardview.widget.CardView>
 
     <ImageView
