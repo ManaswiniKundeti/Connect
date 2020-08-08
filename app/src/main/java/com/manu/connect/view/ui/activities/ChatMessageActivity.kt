@@ -1,6 +1,5 @@
 package com.manu.connect.view.ui.activities
 
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -21,11 +20,8 @@ import com.manu.connect.R
 import com.manu.connect.extensions.hide
 import com.manu.connect.extensions.show
 import com.manu.connect.model.Users
-import com.manu.connect.view.ui.fragments.SettingsFragment
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_chat_message.*
-import kotlinx.android.synthetic.main.fragment_settings.*
-import java.lang.StringBuilder
 
 class ChatMessageActivity : AppCompatActivity() {
 
@@ -43,6 +39,7 @@ class ChatMessageActivity : AppCompatActivity() {
         val reference = FirebaseDatabase.getInstance().reference
             .child("Users").child(userIdVisit)
 
+        //set receiver's profile pic and username from DB on the top app bar
         reference.addValueEventListener(object : ValueEventListener{
             override fun onCancelled(error: DatabaseError) {
             }
@@ -55,6 +52,7 @@ class ChatMessageActivity : AppCompatActivity() {
 
         })
 
+        //when sender clicks on send button, sending message to receiver
         send_message_button.setOnClickListener {
             val message = text_message.text.toString()
             if(message == ""){
@@ -65,6 +63,7 @@ class ChatMessageActivity : AppCompatActivity() {
             text_message.setText("")
         }
 
+        //when sender clicks on attachment button, opening local storage to pick image
         attach_image_button.setOnClickListener {
             val intent = Intent()
             intent.action = Intent.ACTION_GET_CONTENT
@@ -74,6 +73,7 @@ class ChatMessageActivity : AppCompatActivity() {
     }
 
     private fun sendMessageToUser(senderId: String, receiverId: String?, message: String) {
+        chat_message_progress_bar.show()
         val reference = FirebaseDatabase.getInstance().reference
         val messageKey = reference.push().key
 
@@ -82,45 +82,51 @@ class ChatMessageActivity : AppCompatActivity() {
         messageHashMap["message"] = message
         messageHashMap["receiver"] = receiverId.toString()
         messageHashMap["isseen"] = false
-        messageHashMap["url"] = ""
+        messageHashMap["url"] = ""    //if sending an image attachment as message, url will have firebase storage link to that image
         messageHashMap["messageId"] = messageKey.toString()
+
         reference.child("Chats")
             .child(messageKey!!)
             .setValue(messageHashMap)
             .addOnCompleteListener { task ->
                 if(task.isSuccessful){
-                    //sender
-                    val chatsListSenderReference = FirebaseDatabase.getInstance()
-                        .reference.child("ChatList")
+                    //add receiver to sender's ChatList
+                    val chatsListSenderReference = FirebaseDatabase.getInstance().reference
+                        .child("ChatList")
                         .child(firebaseUser!!.uid)
                         .child(userIdVisit)
+
                     chatsListSenderReference.addListenerForSingleValueEvent(object : ValueEventListener{
-                        override fun onCancelled(error: DatabaseError) {
-                        }
                         override fun onDataChange(snapshot: DataSnapshot) {
                             if(!snapshot.exists()){
                                 chatsListSenderReference.child("id").setValue(userIdVisit)
                             }
-                            //receiver
+
+                            //adding sender to receiver's ChatList
                             val chatsListReceiverReference = FirebaseDatabase.getInstance()
                                 .reference.child("ChatList")
                                 .child(userIdVisit)
                                 .child(firebaseUser!!.uid)
                             chatsListReceiverReference.child("id").setValue(firebaseUser!!.uid)
                         }
+                        override fun onCancelled(error: DatabaseError) {
+                        }
                     })
 
                     //TODO : Implement Push Notification
-                    
+
                     val reference = FirebaseDatabase.getInstance().reference
                         .child("Users").child(firebaseUser!!.uid)
                 }
             }
+        chat_message_progress_bar.hide()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
         chat_message_progress_bar.show()
+
         if(requestCode == 438 && resultCode == RESULT_OK && data != null && data!!.data != null) {
             val fileUri = data!!.data
             val storageReference = FirebaseStorage.getInstance().reference.child("Chat Images")
@@ -156,7 +162,7 @@ class ChatMessageActivity : AppCompatActivity() {
                 }
             }
         }
-
+        chat_message_progress_bar.hide()
     }
 
 }

@@ -58,7 +58,6 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/attachment_icon"
-        android:margin="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/text_message"
         app:layout_constraintStart_toStartOf="parent"
