@@ -5,6 +5,8 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
@@ -19,7 +21,9 @@ import com.google.firebase.storage.UploadTask
 import com.manu.connect.R
 import com.manu.connect.extensions.hide
 import com.manu.connect.extensions.show
+import com.manu.connect.model.Chat
 import com.manu.connect.model.Users
+import com.manu.connect.view.adapter.ChatAdapter
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_chat_message.*
 
@@ -27,6 +31,11 @@ class ChatMessageActivity : AppCompatActivity() {
 
     var userIdVisit : String = ""
     var firebaseUser : FirebaseUser? = null
+    var chatAdapter : ChatAdapter? = null
+    //retrieve all chats and save messages in arraylist to send into ChatAdapter
+    var mChatList : List<Chat>? = null
+    //lateinit var chatsRecyclerView : RecyclerView
+    private var chatsRecyclerView : RecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,10 +45,17 @@ class ChatMessageActivity : AppCompatActivity() {
         userIdVisit = intent.getStringExtra("visit_id")
         firebaseUser = FirebaseAuth.getInstance().currentUser
 
+        chatsRecyclerView = findViewById(R.id.recycler_view_chat_message)
+        chatsRecyclerView?.setHasFixedSize(true)
+
+        var chatLayoutManager = LinearLayoutManager(this)
+        chatLayoutManager.stackFromEnd = true
+        chatsRecyclerView?.layoutManager = chatLayoutManager
+
         val reference = FirebaseDatabase.getInstance().reference
             .child("Users").child(userIdVisit)
 
-        //set receiver's profile pic and username from DB on the top app bar
+        //set receiver's profile pic and username from DB on the ChatMessage activty's AppBar
         reference.addValueEventListener(object : ValueEventListener{
             override fun onCancelled(error: DatabaseError) {
             }
@@ -48,8 +64,9 @@ class ChatMessageActivity : AppCompatActivity() {
                val user : Users? = snapshot.getValue(Users::class.java)
                 username_chat_message.text = user!!.getUsername()
                 Picasso.get().load(user.getProfile()).into(profile_image_chat_message)
-            }
 
+                retrieveMessages(firebaseUser!!.uid, userIdVisit, user.getProfile())
+            }
         })
 
         //when sender clicks on send button, sending message to receiver
@@ -70,6 +87,33 @@ class ChatMessageActivity : AppCompatActivity() {
             intent.type = "image/*"
             startActivityForResult(Intent.createChooser(intent,"Pick Image"), 438)
         }
+    }
+
+    private fun retrieveMessages(senderId: String, receiverId: String?, receiverImageUrl: String) {
+        mChatList = ArrayList()
+
+        val reference = FirebaseDatabase.getInstance().reference.child("Chats")
+        reference!!.addValueEventListener(object  : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot)
+            {
+                (mChatList as ArrayList<Chat>).clear()
+                for(snapshotItem in snapshot.children)
+                {
+                    val chat = snapshotItem.getValue(Chat::class.java)
+                    if(chat!!.getReceiver().equals(senderId) && chat.getSender().equals(receiverId)
+                        || chat.getReceiver().equals(receiverId) && chat.getSender().equals(senderId))
+                    {
+                        (mChatList as ArrayList<Chat>).add(chat)
+                    }
+                    chatAdapter = ChatAdapter(this@ChatMessageActivity, mChatList as ArrayList<Chat>, receiverImageUrl!!)
+                    chatsRecyclerView!!.adapter = chatAdapter
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
     }
 
     private fun sendMessageToUser(senderId: String, receiverId: String?, message: String) {
@@ -101,7 +145,6 @@ class ChatMessageActivity : AppCompatActivity() {
                             if(!snapshot.exists()){
                                 chatsListSenderReference.child("id").setValue(userIdVisit)
                             }
-
                             //adding sender to receiver's ChatList
                             val chatsListReceiverReference = FirebaseDatabase.getInstance()
                                 .reference.child("ChatList")
