@@ -50,50 +50,50 @@ class ChatAdapter(
 
         if(chat.getMessage().equals("Sent an image..") && !chat.getUrl().equals("")){
             //image message
-            if(chat.getSender().equals(firebaseUser!!.uid)){
+            if(chat.getSender().equals(firebaseUser.uid)){
                 //right side - SENDER
-                holder.chat_message_text_view!!.hide()
+                holder.chat_message_text_view.hide()
                 holder.image_message_right?.show()
                 Picasso.get().load(chat.getUrl()).into(holder.image_message_right)
             } else if (!chat.getSender().equals(firebaseUser!!.uid)){
                 //left side - SENDER
-                holder.chat_message_text_view!!.hide()
+                holder.chat_message_text_view.hide()
                 holder.image_message_left?.show()
                 Picasso.get().load(chat.getUrl()).into(holder.image_message_left)
             }
         }else{
             //text message
-            holder.chat_message_text_view!!.text = chat.getMessage()
+            holder.chat_message_text_view.text = chat.getMessage()
         }
 
         //sent and seen messages
         if(position == mChatlist.size - 1){
             if(chat.getIsseen()!!){
-                holder.seen_text_view!!.text = "Seen"
+                holder.seen_text_view.text = "Seen"
                 //if it is an image message, move seen text view a little
                 if(chat.getMessage().equals("Sent an image..") && !chat.getUrl().equals("")){
                     val lp : ConstraintLayout.LayoutParams? = holder.seen_text_view.layoutParams as ConstraintLayout.LayoutParams?
                     lp!!.setMargins(0,245,10, 0)
-                    holder.seen_text_view!!.layoutParams = lp
+                    holder.seen_text_view.layoutParams = lp
                 }
             }else{
-                holder.seen_text_view!!.text = "Sent"
+                holder.seen_text_view.text = "Sent"
                 //if it is an image message, move sent text view a little
                 if(chat.getMessage().equals("Sent an image..") && !chat.getUrl().equals("")){
                     val lp : ConstraintLayout.LayoutParams? = holder.seen_text_view.layoutParams as ConstraintLayout.LayoutParams?
                     lp!!.setMargins(0,245,10, 0)
-                    holder.seen_text_view!!.layoutParams = lp
+                    holder.seen_text_view.layoutParams = lp
                 }
             }
         }else{
             //if there are 0 messages
-            holder.seen_text_view!!.hide()
+            holder.seen_text_view.hide()
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         //if sender if == firebaseUID, then current user is the online user -> SENDER -> so will use right side -> 1
-        return  if(mChatlist[position].getSender().equals(firebaseUser!!.uid)){
+        return  if(mChatlist[position].getSender().equals(firebaseUser.uid)){
             1
         }else{
             0
