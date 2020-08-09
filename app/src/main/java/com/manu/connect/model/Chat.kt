@@ -4,7 +4,7 @@ class Chat {
     private var sender : String = ""
     private var message : String = ""
     private var receiver : String = ""
-    private var isseen = false
+    private var isseen : Boolean = false
     private var url : String = ""
     private var messageId : String = ""
 
