@@ -13,9 +13,11 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.iid.FirebaseInstanceId
 import com.manu.connect.R
 import com.manu.connect.model.Chatlist
 import com.manu.connect.model.Users
+import com.manu.connect.notification.Token
 import com.manu.connect.view.adapter.UserAdapter
 
 class ChatFragment : Fragment() {
@@ -57,7 +59,16 @@ class ChatFragment : Fragment() {
 
         })
 
+        //For notifications
+        updateToken(FirebaseInstanceId.getInstance().token)
+
         return view
+    }
+
+    private fun updateToken(token: String?) {
+        val reference = FirebaseDatabase.getInstance().reference.child("Tokens")
+        val curentToken = Token(token!!)
+        reference.child(firebaseUser!!.uid).setValue(curentToken)
     }
 
     private fun retrieveChatList(){
@@ -78,7 +89,7 @@ class ChatFragment : Fragment() {
                         }
                     }
                 }
-                userAdapter = UserAdapter(context!!, mUsers as ArrayList<Users>, true)
+                userAdapter = UserAdapter(context!!, mUsers!! as ArrayList<Users>, true)
                 chatListRecyclerView.adapter = userAdapter
             }
 

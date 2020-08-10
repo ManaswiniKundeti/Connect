@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.manu.connect.R
+import com.manu.connect.model.Chat
 import com.manu.connect.model.Users
 import com.manu.connect.view.adapter.ViewPagerAdapter
 import com.squareup.picasso.Picasso
@@ -32,7 +33,41 @@ class MainActivity : AppCompatActivity() {
         firebaseUser = FirebaseAuth.getInstance().currentUser
         referenceUsers = FirebaseDatabase.getInstance().reference.child("Users").child(firebaseUser!!.uid)
 
-        setupViewPager()
+        //setupViewPager()
+
+        viewPagerAdapter = ViewPagerAdapter(this)
+        //check for unread/unseen messages
+        val reference = FirebaseDatabase.getInstance().reference.child("Chats")
+        reference.addValueEventListener(object : ValueEventListener{
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+            override fun onDataChange(snapshot: DataSnapshot) {
+                view_pager_main.adapter = viewPagerAdapter
+                var countUnreadMessages = 0
+
+                for(snapshotItem in snapshot.children){
+                    val chat = snapshotItem.getValue(Chat::class.java)
+                    if(chat!!.getReceiver().equals(firebaseUser!!.uid) && !chat.getIsseen()!!){
+                        countUnreadMessages += 1
+                    }
+                }
+                TabLayoutMediator(tab_layout_main, view_pager_main, TabLayoutMediator.TabConfigurationStrategy{tab, position ->
+                    when(position){
+                        0 ->
+                        if(countUnreadMessages == 0){
+                            tab.text = "CHATS"
+                        }else{
+                           tab.text = "($countUnreadMessages) CHATS"
+                        }
+                        1 -> tab.text = "SEARCH"
+                        2 -> tab.text = "SETTINGS"
+                    }
+                }).attach()
+
+            }
+
+        })
 
         //display username and profile photo
         referenceUsers!!.addValueEventListener(object : ValueEventListener{
@@ -48,6 +83,9 @@ class MainActivity : AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {
             }
         })
+
+
+
     }
 
     private fun setupViewPager() {
@@ -61,6 +99,7 @@ class MainActivity : AppCompatActivity() {
                 2 -> tab.text = "SETTINGS"
             }
         }).attach()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

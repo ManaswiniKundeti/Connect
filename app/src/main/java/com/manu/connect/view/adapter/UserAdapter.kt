@@ -30,32 +30,37 @@ class UserAdapter(mContext: Context, mUsers : List<Users>, isChatCheck : Boolean
         return ItemViewHolder(view)
     }
 
-
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val user : Users = mUsers[position]
         holder.bindView(user)
 
         holder.itemView.setOnClickListener {
-            val options = arrayOf<CharSequence>(
-                "Send Message",
-                "Visit Profile"
-            )
-            val builder : AlertDialog.Builder = AlertDialog.Builder(mContext)
-            builder.setTitle("What do you want?")
-            builder.setItems(options, DialogInterface.OnClickListener { dialog, position ->
-                if(position == 0){
-                    val intent = Intent(mContext, ChatMessageActivity::class.java)
-                    intent.putExtra("visit_id", user.getUID())
-                    mContext.startActivity(intent)
-                }
-                if(position == 1){
+            if(isChatCheck){
+                val intent = Intent(mContext, ChatMessageActivity::class.java)
+                intent.putExtra("visit_id", user.getUID())
+                mContext.startActivity(intent)
+            }else{
+                val options = arrayOf<CharSequence>(
+                    "Send Message",
+                    "Visit Profile"
+                )
+                val builder : AlertDialog.Builder = AlertDialog.Builder(mContext)
+                builder.setTitle("What do you want?")
+                builder.setItems(options, DialogInterface.OnClickListener { dialog, position ->
+                    if(position == 0){
+                        val intent = Intent(mContext, ChatMessageActivity::class.java)
+                        intent.putExtra("visit_id", user.getUID())
+                        mContext.startActivity(intent)
+                    }
+                    if(position == 1){
+                        //go to their profile
+                    }
+                })
+                builder.show()
+            }
 
-                }
-            })
-            builder.show()
         }
     }
-
 
     override fun getItemCount(): Int {
         return mUsers.size
@@ -63,9 +68,6 @@ class UserAdapter(mContext: Context, mUsers : List<Users>, isChatCheck : Boolean
 
 }
 class ItemViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
-
-    //        var usernameTextView : TextView = itemView.findViewById(R.id.username_search_item)
-//        var profileImageView : CircleImageView = itemView.findViewById(R.id.profile_image_search_item)
 //        var onlineImageView : CircleImageView = itemView.findViewById(R.id.image_online_search_item)
 //        var offlineImageView : CircleImageView = itemView.findViewById(R.id.image_offline_search_item)
 //        var lastMessageTextView : TextView = itemView.findViewById(R.id.message_last_search_item)
