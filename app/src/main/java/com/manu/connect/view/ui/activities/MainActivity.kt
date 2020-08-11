@@ -34,8 +34,8 @@ class MainActivity : AppCompatActivity() {
         referenceUsers = FirebaseDatabase.getInstance().reference.child("Users").child(firebaseUser!!.uid)
 
         //setupViewPager()
-
         viewPagerAdapter = ViewPagerAdapter(this)
+
         //check for unread/unseen messages
         val reference = FirebaseDatabase.getInstance().reference.child("Chats")
         reference.addValueEventListener(object : ValueEventListener{
@@ -83,9 +83,6 @@ class MainActivity : AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {
             }
         })
-
-
-
     }
 
     private fun setupViewPager() {
@@ -122,4 +119,21 @@ class MainActivity : AppCompatActivity() {
         return false
     }
 
+    private fun updateUserStatus(status : String){
+        val dbReference = FirebaseDatabase.getInstance().reference.child("Users").child(firebaseUser!!.uid)
+
+        val hashMap = HashMap<String, Any>()
+        hashMap["status"] = status
+        dbReference!!.updateChildren(hashMap)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateUserStatus("online")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        updateUserStatus("offline")
+    }
 }
