@@ -22,6 +22,7 @@ import com.manu.connect.model.Chat
 import com.manu.connect.model.Users
 import com.manu.connect.view.ui.activities.ChatMessageActivity
 import com.manu.connect.view.ui.activities.MainActivity
+import com.manu.connect.view.ui.activities.UserProfileActivity
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -84,7 +85,11 @@ class UserAdapter(mContext: Context, mUsers : List<Users>, isChatCheck : Boolean
                         mContext.startActivity(intent)
                     }
                     if(position == 1){
-                        //go to their profile
+                        //go to user profile
+                        val intent = Intent(mContext, UserProfileActivity::class.java)
+                        intent.putExtra("visit_id", user.getUID())
+                        mContext.startActivity(intent)
+
                     }
                 })
                 builder.show()

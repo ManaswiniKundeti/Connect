@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    tools:context=".view.ui.fragments.SettingsFragment">
+    tools:context=".view.ui.activities.UserProfileActivity"
+    android:padding="16dp">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/settings_card_view"
+        android:id="@+id/profile_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -17,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/settings_cover_image"
+            android:id="@+id/profile_cover_image"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
@@ -27,7 +26,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/settings_profile_image"
+            android:id="@+id/profile_image"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_gravity="center_horizontal"
@@ -37,7 +36,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/settings_username"
+            android:id="@+id/profile_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="User name"
@@ -54,31 +53,31 @@
     </androidx.cardview.widget.CardView>
 
     <ImageView
-        android:id="@+id/settings_facebook"
+        android:id="@+id/profile_facebook"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:scaleType="centerCrop"
         android:src="@drawable/facebook"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/settings_instagram"
+        app:layout_constraintEnd_toStartOf="@+id/profile_instagram"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/settings_card_view" />
+        app:layout_constraintTop_toBottomOf="@+id/profile_card_view" />
 
     <ImageView
-        android:id="@+id/settings_instagram"
+        android:id="@+id/profile_instagram"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:scaleType="centerCrop"
         android:src="@drawable/instagram"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/settings_website"
+        app:layout_constraintEnd_toStartOf="@+id/profile_website"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/settings_facebook"
-        app:layout_constraintTop_toBottomOf="@+id/settings_card_view" />
+        app:layout_constraintStart_toEndOf="@+id/profile_facebook"
+        app:layout_constraintTop_toBottomOf="@+id/profile_card_view" />
 
     <ImageView
-        android:id="@+id/settings_website"
+        android:id="@+id/profile_website"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:scaleType="centerCrop"
@@ -86,11 +85,24 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/settings_instagram"
-        app:layout_constraintTop_toBottomOf="@+id/settings_card_view" />
+        app:layout_constraintStart_toEndOf="@+id/profile_instagram"
+        app:layout_constraintTop_toBottomOf="@+id/profile_card_view" />
+
+    <Button
+        android:id="@+id/profile_send_message_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@id/profile_facebook"
+        android:background="@color/colorProfile"
+        android:textColor="@android:color/white"
+        android:textAllCaps="false"
+        android:text="Send Message"
+        />
+
 
     <ProgressBar
-        android:id="@+id/settings_progress_bar"
+        android:id="@+id/profile_progress_bar"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -100,5 +112,5 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible"
         android:visibility="gone"/>
-    
+
 </androidx.constraintlayout.widget.ConstraintLayout>

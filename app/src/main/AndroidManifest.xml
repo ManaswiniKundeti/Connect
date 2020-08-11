@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.ui.activities.ViewFullImageActivity"></activity>
+        <activity android:name=".view.ui.activities.UserProfileActivity"></activity>
+        <activity android:name=".view.ui.activities.ViewFullImageActivity" />
         <activity android:name=".view.ui.activities.ChatMessageActivity" />
         <activity android:name=".view.ui.activities.WelcomeActivity">
             <intent-filter>
