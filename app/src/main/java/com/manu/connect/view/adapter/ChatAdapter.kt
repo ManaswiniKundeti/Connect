@@ -1,19 +1,26 @@
 package com.manu.connect.view.adapter
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.FirebaseDatabase
 import com.manu.connect.R
 import com.manu.connect.extensions.hide
 import com.manu.connect.extensions.show
 import com.manu.connect.model.Chat
+import com.manu.connect.view.ui.activities.ViewFullImageActivity
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -48,22 +55,82 @@ class ChatAdapter(
 
         Picasso.get().load(imageUrl).into(holder.profile_image_left)
 
+        //For Image Messages
         if(chat.getMessage().equals("Sent an image..") && !chat.getUrl().equals("")){
-            //image message
             if(chat.getSender().equals(firebaseUser.uid)){
                 //right side - SENDER
                 holder.chat_message_text_view.hide()
                 holder.image_message_right?.show()
                 Picasso.get().load(chat.getUrl()).into(holder.image_message_right)
+
+                //Operations on Image Message
+                holder.image_message_right!!.setOnClickListener {
+                    val options = arrayOf(
+                        "View Full Image",
+                        "Delete Image",
+                        "Cancel"
+                    )
+                    var builder : AlertDialog.Builder = AlertDialog.Builder(holder.itemView.context)
+                    builder.setTitle("Select Operation")
+                    builder.setItems(options, DialogInterface.OnClickListener { dialogInterface, which ->
+                        if(which == 0){
+                            val intent = Intent(mContext, ViewFullImageActivity::class.java)
+                            intent.putExtra("url", chat.getUrl())
+                            mContext.startActivity(intent)
+                        }else if(which == 1){
+                            deleteSentMessage(position,holder)
+                        }
+                    })
+                    builder.show()
+                }
+
             } else if (!chat.getSender().equals(firebaseUser!!.uid)){
-                //left side - SENDER
+                //left side - RECEIVER
                 holder.chat_message_text_view.hide()
                 holder.image_message_left?.show()
                 Picasso.get().load(chat.getUrl()).into(holder.image_message_left)
+
+                //Operations on Image Message
+                holder.image_message_left!!.setOnClickListener {
+                    val options = arrayOf(
+                        "View Full Image",
+                        "Cancel"
+                    )
+                    var builder : AlertDialog.Builder = AlertDialog.Builder(holder.itemView.context)
+                    builder.setTitle("Select Operation")
+                    builder.setItems(options, DialogInterface.OnClickListener { dialogInterface, which ->
+                        if(which == 0){
+                            val intent = Intent(mContext, ViewFullImageActivity::class.java)
+                            intent.putExtra("url", chat.getUrl())
+                            mContext.startActivity(intent)
+                        }
+                    })
+                    builder.show()
+                }
             }
         }else{
-            //text message
+            //For Text Messages
             holder.chat_message_text_view.text = chat.getMessage()
+
+            //Operation on Text Messages
+
+            //sender[the logged in user] can only delete the messages sent by him
+            if(firebaseUser.uid!! == chat.getSender()){
+                holder.chat_message_text_view!!.setOnClickListener {
+                    val options = arrayOf(
+                        "Delete Message",
+                        "Cancel"
+                    )
+                    var builder : AlertDialog.Builder = AlertDialog.Builder(holder.itemView.context)
+                    builder.setTitle("Select Operation")
+                    builder.setItems(options, DialogInterface.OnClickListener { dialogInterface, which ->
+                        if(which == 0){
+                            deleteSentMessage(position,holder)
+                        }
+                    })
+                    builder.show()
+                }
+            }
         }
 
         //sent and seen messages
@@ -99,6 +166,19 @@ class ChatAdapter(
             0
         }
 
+    }
+
+    private fun deleteSentMessage(position : Int, viewHolder: ChatItemViewHolder){
+        val dbReference = FirebaseDatabase.getInstance().reference.child("Chats")
+            .child(mChatlist[position].getMessageId()!!)
+            .removeValue()
+            .addOnCompleteListener { task->
+                if(task.isSuccessful){
+                    Toast.makeText(viewHolder.itemView.context, "Message Deleted", Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(viewHolder.itemView.context, "Error deleting message", Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 }
 
