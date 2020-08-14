@@ -11,10 +11,10 @@ A Whats app clone, Android application. This app was built on <b>Kotlin</b> usin
 </br>
 
 <p align="center">
-<img src="/previews/splash_screen.jpg" width=150/>
-<img src = "/previews/main_screen.jpg" width=150 />
-<img src = "/previews/restaurants_screen.jpg" width=150 />
-<img src = "/previews/restaurant_details.jpg" width=150 />
+<img src="/previews/Connect-Home.jpeg" width=150/>
+<img src = "/previews/Connect-Search.jpeg" width=150 />
+<img src = "/previews/Connect-Settings.jpeg" width=150 />
+<img src = "/previews/Connect-Chat.jpeg" width=150 />
 </p>
 
 ## Download
