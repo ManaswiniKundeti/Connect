@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-A sample android chat application developed using Firebase. This app was built on <b>Kotlin</b> using <b>Retrofit</b>, <b>Picasso</b>, <b>Firebase Storage</b>, <b>Firebase Database</b> and <b>Firebase Cloud Messaging</b>.
+A Whats app clone, Android application. This app was built on <b>Kotlin</b> using <b>Retrofit</b>, <b>Picasso</b>, <b>Firebase Storage</b>, <b>Firebase Database</b> and <b>Firebase Cloud Messaging</b>.
 </p>
 </br>
 
@@ -35,13 +35,8 @@ Go to the [Releases](https://github.com/ManaswiniKundeti/Connect/releases) to do
 - [Retrofit2](https://github.com/square/retrofit)
 - [Picasso](https://square.github.io/picasso/)
 
-## Architecture
-Connect is based on ____ architecture.
-
-<img src=https://developer.android.com/topic/libraries/architecture/images/final-architecture.png width=500>
 
 ## API
-
 Connect uses [Firebase](https://console.firebase.google.com/)
 
 ## Find this repository useful?
